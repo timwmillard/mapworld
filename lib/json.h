@@ -275,8 +275,8 @@ int             json_boolean(const JSON_Value *value);
  * json.c
  ******************************************************************************/
 
-#define JSON_IMPLEMENTATION
 #ifdef JSON_IMPLEMENTATION
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>

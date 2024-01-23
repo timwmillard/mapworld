@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <raylib.h>
 
+#define MAP_DRAW_IMPLEMENTATION
 #include "../lib/map_draw.h"
 
 #define RAYGUI_IMPLEMENTATION

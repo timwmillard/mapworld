@@ -1,3 +1,7 @@
+/******************************************************************************
+ * Header
+ * map_draw.h
+ ******************************************************************************/
 
 #ifndef MAP_DRAW_H
 #define MAP_DRAW_H
@@ -18,11 +22,15 @@ void draw_graph(Graph *graph);
 
 #endif
 
-/******************************************************************************/
+/******************************************************************************
+ * Implementation
+ * map_draw.c
+ ******************************************************************************/
 
-#ifndef MAP_DRAW_IMPLEMENTATION
+#ifdef MAP_DRAW_IMPLEMENTATION
 #define MAP_DRAW_IMPLEMENTATION
 
+#define MAP_IMPLEMENTATION
 #include "map.h"
 
 Vector2 point_to_vector2(Point p)

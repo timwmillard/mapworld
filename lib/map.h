@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * Header
  * map.h
@@ -117,8 +116,7 @@ typedef struct Graph {
  * map.c
  ******************************************************************************/
 
-#ifndef MAP_IMPLEMENTATION
-#define MAP_IMPLEMENTATION
+#ifdef MAP_IMPLEMENTATION
 
 #define STB_DS_IMPLEMENTATION
 #include "stb_ds.h"
