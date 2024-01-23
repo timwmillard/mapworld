@@ -1,0 +1,12 @@
+
+.DS_Store
+
+/build
+
+/mapworld
+*.o
+*.wasm
+*.a
+
+/release/mapworld.app/Contents/MacOS/mapworld
+

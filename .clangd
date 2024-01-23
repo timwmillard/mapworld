@@ -1,0 +1,5 @@
+CompileFlags:
+  Add: [ -I../lib/raylib-5.0/src]
+
+Diagnostics:
+  Suppress: 'misc-definitions-in-headers'
