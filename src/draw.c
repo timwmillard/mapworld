@@ -14,12 +14,26 @@ const int canvas_height = 600;
 
 Graph graph;
 
-void graph_add_random_point(Graph *graph, double width, double height) {
+void graph_add_random_point(Graph *graph, int width, int height) {
 
-    Point p = point(randfrom(0, width), randfrom(0, height));
+    Point p = point(randfromi(0, width), randfrom(0, height));
 
     graph_add_point(graph, p);
 }
+
+void graph_add_random_segment(Graph *graph) {
+
+    int index1 = randfromi(0, graph_points_len(graph));
+    int index2 = randfromi(0, graph_points_len(graph));
+
+    Point p1 = graph_point_at(graph, index1);
+    Point p2 = graph_point_at(graph, index2);
+
+    bool success = graph_add_segment(graph, segmentp(p1, p2));
+    printf("add_segment %d\n", success);
+    fflush(stdout);
+}
+
 
 void Init(int width, int height)
 {
@@ -40,15 +54,19 @@ void Draw()
     ClearBackground(LIGHTGRAY);
 
     /******** GUI ********/
-    if (GuiButton((Rectangle){ 10, canvas_height + 10, 100, 40 }, "+ Add Point")) {
+    if (GuiButton((Rectangle){ 10, canvas_height + 20, 100, 40 }, "+ Add Point")) {
         graph_add_random_point(&graph, canvas_width, canvas_height);
+    }
+
+    if (GuiButton((Rectangle){ 120, canvas_height + 20, 100, 40 }, "+ Add Segment")) {
+        graph_add_random_segment(&graph);
     }
 
 
     /******** Canvas ********/
 
     // Draw Canvas
-    DrawRectangle(0, 0, canvas_width, canvas_height, CANVAS_BACKGROUND_COLOR);
+    DrawRectangle(0, 0, canvas_width, canvas_height + 10, CANVAS_BACKGROUND_COLOR);
 
     DrawText("World Editor", 240, 20, 20, LIGHTGRAY);
 

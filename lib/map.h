@@ -33,6 +33,17 @@ static inline bool equalp(double a, double b, int percision)
     return value_a == value_b;
 }
 
+/* generate a random int number from min to max 
+ * #include <time.h>
+ * srand(time(NULL));
+ * */
+static double randfromi(int min, int max) 
+{
+    int range = (max - min); 
+    int div = RAND_MAX / range;
+    return (int)(min + (rand() / div));
+}
+
 /* generate a random floating point number from min to max 
  * #include <time.h>
  * srand(time(NULL));
@@ -45,15 +56,21 @@ static double randfrom(double min, double max)
 }
 
 typedef struct Point {
-    double x;
-    double y;
+    int x;
+    int y;
 
 } Point;
 
-static inline Point point(double x, double y)
+static inline Point point(int x, int y)
 {
     return (Point){ .x = x, .y = y, };
 }
+
+static inline bool point_equals(Point p1, Point p2)
+{
+    return p1.x == p2.x && p1.y == p2.y;
+}
+
 
 typedef struct Segment {
     Point p1;
@@ -70,6 +87,12 @@ static inline Segment segmentp(Point p1, Point p2)
 static inline Segment segment(double x1, double y1, double x2, double y2)
 {
     return segmentp(point(x1, y1), point(x2, y2));
+}
+
+static inline bool segment_equals(Segment s1, Segment s2)
+{
+    return point_equals(s1.p1, s2.p1) && point_equals(s1.p2, s2.p2) ||
+        point_equals(s1.p1, s2.p2) && point_equals(s1.p2, s2.p1);
 }
 
 // Spatial Graph
@@ -89,10 +112,21 @@ typedef struct Graph {
 #define STB_DS_IMPLEMENTATION
 #include "stb_ds.h"
 
-
-void graph_add_point(Graph *graph, Point p)
+bool graph_contains_point(Graph *graph, Point p)
 {
+    for (int i=0; i<arrlen(graph->points); i++) {
+        if (point_equals(graph->points[i], p))
+            return true;
+    }
+    return false;
+}
+
+bool graph_add_point(Graph *graph, Point p)
+{
+    if (graph_contains_point(graph, p)) return false;
+
     arrput(graph->points, p);
+    return true;
 }
 
 void graph_add_pointxy(Graph *graph, double x, double y)
@@ -100,9 +134,31 @@ void graph_add_pointxy(Graph *graph, double x, double y)
     graph_add_point(graph, point(x, y));
 }
 
-void graph_add_segment(Graph *graph, Segment s)
+int graph_points_len(Graph *graph)
 {
+
+    return arrlen(graph->points);
+}
+
+Point graph_point_at(Graph *graph, int index)
+{
+    if (index >= arrlen(graph->points) || index < 0)
+        return (Point){0};
+
+    return graph->points[index];
+}
+
+bool graph_add_segment(Graph *graph, Segment s)
+{
+    if (point_equals(s.p1, s.p2)) return false; 
+
+    for (int i=0; i<arrlen(graph->segments); i++) {
+        if (segment_equals(graph->segments[i], s))
+            return false;
+    }
+
     arrput(graph->segments, s);
+    return true;
 }
 
 void graph_add_segmentp(Graph *graph, Point p1, Point p2)
