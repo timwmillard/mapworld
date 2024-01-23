@@ -31,7 +31,7 @@ all: $(TARGET)
 $(TARGET) : main.o draw.o
 	$(LD) -o $(TARGET) $^ $(FRAMEWORKS) $(LDFLAGS)
 
-draw.o: src/draw.c lib/physics2d.h
+draw.o: src/draw.c lib/map_draw.h lib/map.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 main.o: src/main.c

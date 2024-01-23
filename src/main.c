@@ -15,7 +15,7 @@ void Draw(void);
 int main(void)
 {
     const int screenWidth = 600;
-    const int screenHeight = 600;
+    const int screenHeight = 700;
 
     srand(time(NULL));
 

@@ -5,7 +5,44 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <math.h>
 
+static inline double map(const double value,
+        const double start1, const double stop1,
+        const double start2, const double stop2)
+{
+    return (value - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+}
+
+static inline double max(const double a, const double b)
+{
+    return (a > b)? a : b;
+}
+
+static inline double min(const double a, const double b)
+{
+    return (a < b)? a : b;
+}
+
+// equalp compares two doubles for equality with given percision.
+static inline bool equalp(double a, double b, int percision)
+{
+    int multi = pow(10, percision);
+    int value_a = (int)(a * multi + 0.5); 
+    int value_b = (int)(b * multi + 0.5); 
+    return value_a == value_b;
+}
+
+/* generate a random floating point number from min to max 
+ * #include <time.h>
+ * srand(time(NULL));
+ * */
+static double randfrom(double min, double max) 
+{
+    double range = (max - min); 
+    double div = RAND_MAX / range;
+    return min + (rand() / div);
+}
 
 typedef struct Point {
     double x;

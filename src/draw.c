@@ -1,9 +1,25 @@
-// #include <stdio.h>
+#include <stdio.h>
 #include <raylib.h>
 
 #include "../lib/map_draw.h"
 
+#define RAYGUI_IMPLEMENTATION
+#include "../lib/raygui.h"
+
+
+const int canvas_width = 600;
+const int canvas_height = 600;
+// #22aa55
+#define CANVAS_BACKGROUND_COLOR   (Color){ 34, 170, 84, 255 }   
+
 Graph graph;
+
+void graph_add_random_point(Graph *graph, double width, double height) {
+
+    Point p = point(randfrom(0, width), randfrom(0, height));
+
+    graph_add_point(graph, p);
+}
 
 void Init(int width, int height)
 {
@@ -18,12 +34,21 @@ void Update(float dt)
 {
 }
 
-// #22aa55
-#define BACKGROUND_COLOR   (Color){ 34, 170, 84, 255 }   
 
 void Draw()
 {
-    ClearBackground(BACKGROUND_COLOR);
+    ClearBackground(LIGHTGRAY);
+
+    /******** GUI ********/
+    if (GuiButton((Rectangle){ 10, canvas_height + 10, 100, 40 }, "+ Add Point")) {
+        graph_add_random_point(&graph, canvas_width, canvas_height);
+    }
+
+
+    /******** Canvas ********/
+
+    // Draw Canvas
+    DrawRectangle(0, 0, canvas_width, canvas_height, CANVAS_BACKGROUND_COLOR);
 
     DrawText("World Editor", 240, 20, 20, LIGHTGRAY);
 

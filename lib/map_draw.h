@@ -45,11 +45,11 @@ void draw_segment(Segment seg, double width, Color color)
 void draw_graph(Graph *graph)
 {
     for (int i=0; i<arrlen(graph->segments); i++) {
-        draw_segment(graph->segments[i], 2, BLUE);
+        draw_segment(graph->segments[i], 2, DARKGRAY);
     }
 
     for (int i=0; i<arrlen(graph->points); i++) {
-        draw_point(graph->points[i], 18, RED);
+        draw_point(graph->points[i], 18, DARKGRAY);
     }
 }
 
