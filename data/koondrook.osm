@@ -1,0 +1,11 @@
+[out:json][timeout:25];
+(
+  way["highway"]
+  ['highway' !~'path']
+
+  ({{bbox}});
+);
+
+out body;
+>;
+out skel;
