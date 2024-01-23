@@ -1,4 +1,9 @@
 
+/******************************************************************************
+ * Header
+ * map.h
+ ******************************************************************************/
+
 #ifndef MAP_H
 #define MAP_H
 
@@ -89,10 +94,14 @@ static inline Segment segment(double x1, double y1, double x2, double y2)
     return segmentp(point(x1, y1), point(x2, y2));
 }
 
+static inline bool segment_includes_point(Segment s, Point p)
+{
+    return point_equals(s.p1, p) || point_equals(s.p2, p);
+}
+
 static inline bool segment_equals(Segment s1, Segment s2)
 {
-    return point_equals(s1.p1, s2.p1) && point_equals(s1.p2, s2.p2) ||
-        point_equals(s1.p1, s2.p2) && point_equals(s1.p2, s2.p1);
+    return segment_includes_point(s1, s2.p1) && segment_includes_point(s1, s2.p2);
 }
 
 // Spatial Graph
@@ -103,8 +112,10 @@ typedef struct Graph {
 
 #endif
 
-/******************************************************************************/
-
+/******************************************************************************
+ * Implementation
+ * map.c
+ ******************************************************************************/
 
 #ifndef MAP_IMPLEMENTATION
 #define MAP_IMPLEMENTATION
@@ -136,7 +147,6 @@ void graph_add_pointxy(Graph *graph, double x, double y)
 
 int graph_points_len(Graph *graph)
 {
-
     return arrlen(graph->points);
 }
 
@@ -166,6 +176,11 @@ void graph_add_segmentp(Graph *graph, Point p1, Point p2)
    graph_add_segment(graph, segmentp(p1, p2));
 }
 
+
+int graph_segments_len(Graph *graph)
+{
+    return arrlen(graph->segments);
+}
 
 #endif
 

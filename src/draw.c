@@ -30,8 +30,12 @@ void graph_add_random_segment(Graph *graph) {
     Point p2 = graph_point_at(graph, index2);
 
     bool success = graph_add_segment(graph, segmentp(p1, p2));
-    printf("add_segment %d\n", success);
-    fflush(stdout);
+}
+
+void graph_remove_random_segment(Graph *graph) {
+
+    if (graph_segments_len(graph) <=0 ) return;
+
 }
 
 
@@ -54,11 +58,15 @@ void Draw()
     ClearBackground(LIGHTGRAY);
 
     /******** GUI ********/
-    if (GuiButton((Rectangle){ 10, canvas_height + 20, 100, 40 }, "+ Add Point")) {
+    if (GuiButton((Rectangle){ 10, canvas_height + 20, 100, 35 }, "+ Add Point")) {
         graph_add_random_point(&graph, canvas_width, canvas_height);
     }
 
-    if (GuiButton((Rectangle){ 120, canvas_height + 20, 100, 40 }, "+ Add Segment")) {
+    if (GuiButton((Rectangle){ 120, canvas_height + 20, 100, 35 }, "+ Add Segment")) {
+        graph_add_random_segment(&graph);
+    }
+
+    if (GuiButton((Rectangle){ 230, canvas_height + 20, 100, 35 }, "- Remove Segment")) {
         graph_add_random_segment(&graph);
     }
 
