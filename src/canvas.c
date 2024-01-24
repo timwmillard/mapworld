@@ -1,19 +1,29 @@
 #include <stdio.h>
 #include <raylib.h>
 
-#define MAP_DRAW_IMPLEMENTATION
-#include "map_draw.h"
+#define GRAPH_EDITOR_IMPLEMENTATION
+#include "graph_editor.h"
 
 #define RAYGUI_IMPLEMENTATION
 #include "../lib/raygui.h"
 
+typedef struct ControlPanel {
+    int x, y;
+    int width, height;
+} ControlPanel;
 
-const int canvas_width = 600;
-const int canvas_height = 600;
-// #22aa55
-#define CANVAS_BACKGROUND_COLOR   (Color){ 34, 170, 84, 255 }   
+/*** Global Variables ***/
+static const int window_width = 600;
+static const int window_height = 700;
+
+static const int canvas_width = 600;
+static const int canvas_height = 600;
 
 Graph graph;
+
+GraphEditor editor;
+ControlPanel controls;
+/************************/
 
 void graph_add_random_point(Graph *graph, int width, int height)
 {
@@ -49,8 +59,11 @@ void graph_remove_random_point(Graph *graph)
 }
 
 
-void Init(int width, int height)
+void Init()
 {
+    InitWindow(window_width, window_height, "Map Editor");
+    SetWindowPosition(100, 100);
+
     Point p1 = point(200, 200);
     Point p2 = point(500, 200);
     Point p3 = point(400, 400);
@@ -70,6 +83,37 @@ void Init(int width, int height)
     graph_add_segment(&graph, s2);
     graph_add_segment(&graph, s3);
     graph_add_segment(&graph, s4);
+
+    graph_editor_init(&editor, &graph, 0, 0, canvas_width, canvas_height);
+    controls.x = canvas_width;
+    controls.y = canvas_height;
+    controls.width = window_width;
+    controls.height = window_height - canvas_height;
+}
+
+
+void draw_control_panel(ControlPanel *panel)
+{
+    /******** GUI ********/
+    if (GuiButton((Rectangle){ 10, panel->x + 20, 100, 35 }, "+ Add Point")) {
+        graph_add_random_point(&graph, canvas_width, canvas_height);
+    }
+
+    if (GuiButton((Rectangle){ 120, panel->x + 20, 100, 35 }, "+ Add Segment")) {
+        graph_add_random_segment(&graph);
+    }
+
+    if (GuiButton((Rectangle){ 230, panel->x + 20, 100, 35 }, "- Remove Segment")) {
+        graph_remove_random_segment(&graph);
+    }
+
+    if (GuiButton((Rectangle){ 340, panel->x + 20, 100, 35 }, "- Remove Point")) {
+        graph_remove_random_point(&graph);
+    }
+
+    if (GuiButton((Rectangle){ 450, panel->x + 20, 100, 35 }, "Clear")) {
+        graph_free(&graph);
+    }
 }
 
 void ProcessEvents()
@@ -86,33 +130,7 @@ void Draw()
 {
     ClearBackground(LIGHTGRAY);
 
-    /******** GUI ********/
-    if (GuiButton((Rectangle){ 10, canvas_height + 20, 100, 35 }, "+ Add Point")) {
-        graph_add_random_point(&graph, canvas_width, canvas_height);
-    }
 
-    if (GuiButton((Rectangle){ 120, canvas_height + 20, 100, 35 }, "+ Add Segment")) {
-        graph_add_random_segment(&graph);
-    }
-
-    if (GuiButton((Rectangle){ 230, canvas_height + 20, 100, 35 }, "- Remove Segment")) {
-        graph_remove_random_segment(&graph);
-    }
-
-    if (GuiButton((Rectangle){ 340, canvas_height + 20, 100, 35 }, "- Remove Point")) {
-        graph_remove_random_point(&graph);
-    }
-
-    if (GuiButton((Rectangle){ 450, canvas_height + 20, 100, 35 }, "Clear")) {
-        graph_free(&graph);
-    }
-
-
-    /******** Canvas ********/
-
-    // Draw Canvas
-    DrawRectangle(0, 0, canvas_width, canvas_height + 10, CANVAS_BACKGROUND_COLOR);
-
-    draw_graph(&graph);
+    graph_editor_draw(&editor);
 }
 

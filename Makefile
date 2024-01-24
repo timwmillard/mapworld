@@ -31,7 +31,7 @@ all: $(TARGET)
 $(TARGET) : main.o canvas.o
 	$(LD) -o $(TARGET) $^ $(FRAMEWORKS) $(LDFLAGS)
 
-canvas.o: src/canvas.c src/map_draw.h lib/map.h
+canvas.o: src/canvas.c src/graph_editor.h lib/map.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 main.o: src/main.c

@@ -3,8 +3,8 @@
  * map_draw.h
  ******************************************************************************/
 
-#ifndef MAP_DRAW_H
-#define MAP_DRAW_H
+#ifndef GRAPH_EDITOR_H
+#define GRAPH_EDITOR_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -13,21 +13,33 @@
 
 #include "../lib/map.h"
 
-
 void draw_point(Point point, double size, Color color);
 
 void draw_segment(Segment line, double width, Color color);
 
 void draw_graph(Graph *graph);
 
+typedef struct GraphEditor {
+    Graph *graph;
+
+    int x, y;
+    int width, height;
+    Color background_color;
+} GraphEditor;
+
+void graph_editor_init(GraphEditor *editor, Graph *graph, int x, int y, int width, int height);
+void graph_editor_process_events(GraphEditor *editor);
+void graph_editor_update(GraphEditor *editor, double dt);
+void graph_editor_draw(GraphEditor *editor);
+
 #endif
 
 /******************************************************************************
  * Implementation
- * map_draw.c
+ * graph_editor.c
  ******************************************************************************/
 
-#ifdef MAP_DRAW_IMPLEMENTATION
+#ifdef GRAPH_EDITOR_IMPLEMENTATION
 
 #define MAP_IMPLEMENTATION
 #include "../lib/map.h"
@@ -51,6 +63,8 @@ void draw_segment(Segment seg, double width, Color color)
 
 void draw_graph(Graph *graph)
 {
+    if (graph == NULL) return;
+
     for (int i=0; i<arrlen(graph->segments); i++) {
         draw_segment(graph->segments[i], 2, DARKGRAY);
     }
@@ -60,5 +74,38 @@ void draw_graph(Graph *graph)
     }
 }
 
+void graph_editor_init(GraphEditor *editor,
+                       Graph *graph,
+                       int x,
+                       int y,
+                       int width,
+                       int height)
+{
+    editor->graph = graph;
+    editor->x = x;
+    editor->y = y;
+    editor->width = width;
+    editor->height = height;
+    editor->background_color = (Color){ 34, 170, 84, 255 }; // #22aa55
+
+}
+
+void graph_editor_process_events(GraphEditor *editor)
+{
+}
+
+
+void graph_editor_update(GraphEditor *editor, double dt)
+{
+}
+
+
+void graph_editor_draw(GraphEditor *editor)
+{
+    // Draw Canvas
+    DrawRectangle(editor->x, editor->y, editor->width, editor->height, editor->background_color);
+
+    draw_graph(editor->graph);
+}
 
 #endif

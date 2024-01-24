@@ -7,20 +7,16 @@
 #include <emscripten/emscripten.h>
 #endif
 
-void Init(int width, int height);
+void Init(void);
 void ProcessEvents(void);
 void Update(float);     // Update and Draw one frame
 void Draw(void);
 
 int main(void)
 {
-    const int screenWidth = 600;
-    const int screenHeight = 700;
-
     srand(time(NULL));
 
-    InitWindow(screenWidth, screenHeight, "World Editor");
-    SetWindowPosition(100, 100);
+    Init();
 
     // Main game loop
 #if defined(PLATFORM_WEB)
@@ -28,7 +24,6 @@ int main(void)
 #else
     SetTargetFPS(60);
 
-    Init(screenWidth, screenHeight);
 
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
