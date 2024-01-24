@@ -217,5 +217,22 @@ bool graph_remove_segment_at(Graph *graph, int index)
     return true;
 }
 
+bool graph_remove_point(Graph *graph, Point p)
+{
+    for (int i=0; i<arrlen(graph->segments); i++) {
+        if (segment_includes_point(graph->segments[i], p)) {
+            arrdel(graph->segments, i);
+        }
+    }
+
+    for (int i=0; i<arrlen(graph->points); i++) {
+        if (point_equals(graph->points[i], p)) {
+            arrdel(graph->points, i);
+            return true;
+        }
+    }
+    return false;
+}
+
 #endif
 

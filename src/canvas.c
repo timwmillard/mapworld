@@ -42,6 +42,13 @@ void graph_remove_random_segment(Graph *graph)
     bool success = graph_remove_segment(graph, s);
 }
 
+void graph_remove_random_point(Graph *graph)
+{
+    int index = randfromi(0, graph_points_len(graph)-1);
+    Point p = graph_point_at(graph, index);
+    bool success = graph_remove_point(graph, p);
+}
+
 
 void Init(int width, int height)
 {
@@ -91,6 +98,10 @@ void Draw()
 
     if (GuiButton((Rectangle){ 230, canvas_height + 20, 100, 35 }, "- Remove Segment")) {
         graph_remove_random_segment(&graph);
+    }
+
+    if (GuiButton((Rectangle){ 340, canvas_height + 20, 100, 35 }, "- Remove Point")) {
+        graph_remove_random_point(&graph);
     }
 
 
