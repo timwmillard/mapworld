@@ -17,7 +17,6 @@ Graph graph;
 
 void graph_add_random_point(Graph *graph, int width, int height)
 {
-
     Point p = point(randfromi(0, width), randfrom(0, height));
 
     graph_add_point(graph, p);
@@ -113,9 +112,6 @@ void Draw()
 
     // Draw Canvas
     DrawRectangle(0, 0, canvas_width, canvas_height + 10, CANVAS_BACKGROUND_COLOR);
-
-    DrawText("World Editor", 240, 20, 20, LIGHTGRAY);
-
 
     draw_graph(&graph);
 }
