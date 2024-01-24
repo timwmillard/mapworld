@@ -11,6 +11,16 @@
 #include <stdlib.h>
 #include <math.h>
 
+static inline double normalize(double value, double start, double end)
+{
+    return (value - start) / (end - start);
+}
+
+static inline double lerp(double start, double end, double amount)
+{
+    return start + amount * (end - start);
+}
+
 static inline double map(const double value,
         const double start1, const double stop1,
         const double start2, const double stop2)
@@ -41,7 +51,7 @@ static inline bool equalp(double a, double b, int percision)
  * #include <time.h>
  * srand(time(NULL));
  * */
-static double randfromi(int min, int max) 
+static int randfromi(int min, int max) 
 {
     int range = (max - min); 
     int div = RAND_MAX / range;

@@ -28,7 +28,6 @@ void draw_graph(Graph *graph);
  ******************************************************************************/
 
 #ifdef MAP_DRAW_IMPLEMENTATION
-#define MAP_DRAW_IMPLEMENTATION
 
 #define MAP_IMPLEMENTATION
 #include "map.h"
