@@ -234,5 +234,11 @@ bool graph_remove_point(Graph *graph, Point p)
     return false;
 }
 
+void graph_free(Graph *graph)
+{
+    arrfree(graph->points);
+    arrfree(graph->segments);
+}
+
 #endif
 

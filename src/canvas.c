@@ -104,6 +104,10 @@ void Draw()
         graph_remove_random_point(&graph);
     }
 
+    if (GuiButton((Rectangle){ 450, canvas_height + 20, 100, 35 }, "Clear")) {
+        graph_free(&graph);
+    }
+
 
     /******** Canvas ********/
 
