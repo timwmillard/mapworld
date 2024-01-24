@@ -166,6 +166,19 @@ Point graph_point_at(Graph *graph, int index)
     return graph->points[index];
 }
 
+int graph_segments_len(Graph *graph)
+{
+    return arrlen(graph->segments);
+}
+
+Segment graph_segment_at(Graph *graph, int index)
+{
+    if (index >= arrlen(graph->segments) || index < 0)
+        return (Segment){0};
+
+    return graph->segments[index];
+}
+
 bool graph_add_segment(Graph *graph, Segment s)
 {
     if (point_equals(s.p1, s.p2)) return false; 
@@ -184,10 +197,24 @@ void graph_add_segmentp(Graph *graph, Point p1, Point p2)
    graph_add_segment(graph, segmentp(p1, p2));
 }
 
-
-int graph_segments_len(Graph *graph)
+bool graph_remove_segment(Graph *graph, Segment s)
 {
-    return arrlen(graph->segments);
+    for (int i=0; i<arrlen(graph->segments); i++) {
+        if (segment_equals(graph->segments[i], s)) {
+            arrdel(graph->segments, i);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool graph_remove_segment_at(Graph *graph, int index)
+{
+    if (index < 0 || index >= graph_segments_len(graph))
+        return false;
+
+    arrdel(graph->segments, index);
+    return true;
 }
 
 #endif

@@ -2,7 +2,7 @@
 #include <raylib.h>
 
 #define MAP_DRAW_IMPLEMENTATION
-#include "../lib/map_draw.h"
+#include "map_draw.h"
 
 #define RAYGUI_IMPLEMENTATION
 #include "../lib/raygui.h"
@@ -15,14 +15,16 @@ const int canvas_height = 600;
 
 Graph graph;
 
-void graph_add_random_point(Graph *graph, int width, int height) {
+void graph_add_random_point(Graph *graph, int width, int height)
+{
 
     Point p = point(randfromi(0, width), randfrom(0, height));
 
     graph_add_point(graph, p);
 }
 
-void graph_add_random_segment(Graph *graph) {
+void graph_add_random_segment(Graph *graph)
+{
 
     int index1 = randfromi(0, graph_points_len(graph));
     int index2 = randfromi(0, graph_points_len(graph));
@@ -33,15 +35,35 @@ void graph_add_random_segment(Graph *graph) {
     bool success = graph_add_segment(graph, segmentp(p1, p2));
 }
 
-void graph_remove_random_segment(Graph *graph) {
+void graph_remove_random_segment(Graph *graph)
+{
+    int index = randfromi(0, graph_segments_len(graph)-1);
 
-    if (graph_segments_len(graph) <=0 ) return;
-
+    bool success = graph_remove_segment_at(graph, index);
 }
 
 
 void Init(int width, int height)
 {
+    Point p1 = point(200, 200);
+    Point p2 = point(500, 200);
+    Point p3 = point(400, 400);
+    Point p4 = point(100, 300);
+
+    Segment s1 = segmentp(p1, p2);
+    Segment s2 = segmentp(p1, p3);
+    Segment s3 = segmentp(p1, p4);
+    Segment s4 = segmentp(p2, p3);
+
+    graph_add_point(&graph, p1);
+    graph_add_point(&graph, p2);
+    graph_add_point(&graph, p3);
+    graph_add_point(&graph, p4);
+
+    graph_add_segment(&graph, s1);
+    graph_add_segment(&graph, s2);
+    graph_add_segment(&graph, s3);
+    graph_add_segment(&graph, s4);
 }
 
 void ProcessEvents()
@@ -68,7 +90,7 @@ void Draw()
     }
 
     if (GuiButton((Rectangle){ 230, canvas_height + 20, 100, 35 }, "- Remove Segment")) {
-        graph_add_random_segment(&graph);
+        graph_remove_random_segment(&graph);
     }
 
 
@@ -78,26 +100,6 @@ void Draw()
     DrawRectangle(0, 0, canvas_width, canvas_height + 10, CANVAS_BACKGROUND_COLOR);
 
     DrawText("World Editor", 240, 20, 20, LIGHTGRAY);
-
-    Point p1 = point(200, 200);
-    Point p2 = point(500, 200);
-    Point p3 = point(400, 400);
-    Point p4 = point(100, 300);
-
-    Segment s1 = segmentp(p1, p2);
-    Segment s2 = segmentp(p1, p3);
-    Segment s3 = segmentp(p1, p4);
-    Segment s4 = segmentp(p2, p3);
-
-    graph_add_point(&graph, p1);
-    graph_add_point(&graph, p2);
-    graph_add_point(&graph, p3);
-    graph_add_point(&graph, p4);
-
-    graph_add_segment(&graph, s1);
-    graph_add_segment(&graph, s2);
-    graph_add_segment(&graph, s3);
-    graph_add_segment(&graph, s4);
 
 
     draw_graph(&graph);

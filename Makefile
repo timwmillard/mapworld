@@ -28,10 +28,10 @@ all: $(TARGET)
 
 
 # Main Siumulation
-$(TARGET) : main.o draw.o
+$(TARGET) : main.o canvas.o
 	$(LD) -o $(TARGET) $^ $(FRAMEWORKS) $(LDFLAGS)
 
-draw.o: src/draw.c lib/map_draw.h lib/map.h
+canvas.o: src/canvas.c src/map_draw.h lib/map.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 main.o: src/main.c
@@ -86,8 +86,8 @@ run:
 clean:
 	rm -f *.o $(TARGET) release/$(TARGET).app/Contents/MacOS/$(TARGET)
 
-test: lib/physics2d.h lib/physics2d_test.c
-	@clang lib/physics2d_test.c -o lib/physics2d_test
-	@./lib/physics2d_test
-	@rm lib/physics2d_test
+test: lib/map.h lib/map_test.c
+	@clang lib/map_test.c -o lib/map_test
+	@./lib/map_test
+	@rm lib/map_test
 
