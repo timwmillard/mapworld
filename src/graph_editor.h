@@ -25,6 +25,10 @@ typedef struct GraphEditor {
     int x, y;
     int width, height;
     Color background_color;
+
+    Point selected_point;
+    Point hovered_point;
+
 } GraphEditor;
 
 void graph_editor_init(GraphEditor *editor, Graph *graph, int x, int y, int width, int height);
@@ -51,6 +55,7 @@ Vector2 point_to_vector2(Point p)
 
 void draw_point(Point point, double size, Color color)
 {
+    if (!point_is_valid(point)) return;
     DrawCircle(point.x, point.y, size/2, color);
 }
 
@@ -87,11 +92,22 @@ void graph_editor_init(GraphEditor *editor,
     editor->width = width;
     editor->height = height;
     editor->background_color = (Color){ 34, 170, 84, 255 }; // #22aa55
-
+    editor->selected_point = invalid_point;
 }
 
 void graph_editor_process_events(GraphEditor *editor)
 {
+    Point mouse = point(GetMouseX(), GetMouseY());
+    Point hovered = graph_nearest_point(editor->graph, mouse, 10);
+    editor->hovered_point = hovered;
+    if (IsMouseButtonReleased(0)) {
+        if (!point_is_valid(hovered)) {
+            graph_add_point(editor->graph, mouse);
+            editor->selected_point = mouse;
+        } else {
+            editor->selected_point = mouse;
+        }
+    }
 }
 
 
@@ -106,6 +122,8 @@ void graph_editor_draw(GraphEditor *editor)
     DrawRectangle(editor->x, editor->y, editor->width, editor->height, editor->background_color);
 
     draw_graph(editor->graph);
+    draw_point(editor->selected_point, 6, RED);
+    draw_point(editor->hovered_point, 8, YELLOW);
 }
 
 #endif

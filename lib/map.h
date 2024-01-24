@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
+#include <limits.h>
 
 static inline double normalize(double value, double start, double end)
 {
@@ -72,12 +73,11 @@ static double randfrom(double min, double max)
 typedef struct Point {
     int x;
     int y;
-
 } Point;
 
 static inline Point point(int x, int y)
 {
-    return (Point){ .x = x, .y = y, };
+    return (Point){ .x = x, .y = y };
 }
 
 static inline bool point_equals(Point p1, Point p2)
@@ -85,6 +85,12 @@ static inline bool point_equals(Point p1, Point p2)
     return p1.x == p2.x && p1.y == p2.y;
 }
 
+static const Point invalid_point = {INT_MAX, INT_MAX};
+
+static inline bool point_is_valid(Point p)
+{
+    return !point_equals(p, invalid_point);
+}
 
 typedef struct Segment {
     Point p1;
@@ -236,6 +242,29 @@ bool graph_remove_point(Graph *graph, Point p)
         }
     }
     return false;
+}
+
+double points_distance(Point p1, Point p2)
+{
+    return hypot(p1.x - p2.x, p1.y - p2.y);
+}
+
+Point points_nearest_point(Point *points, Point p, double min_dist)
+{
+    Point nearest = invalid_point;
+    for (int i=0; i<arrlen(points); i++) {
+        double dist = points_distance(points[i], p);
+        if (dist < min_dist) {
+            min_dist = dist;
+            nearest = points[i];
+        }
+    }
+    return nearest;
+}
+
+Point graph_nearest_point(Graph *graph, Point p, double min_dist)
+{
+    return points_nearest_point(graph->points, p, min_dist);
 }
 
 void graph_free(Graph *graph)

@@ -129,12 +129,14 @@ void draw_control_panel(ControlPanel *panel)
 
     x += button_padding + button_width + button_padding;
     if (GuiButton((Rectangle){ x, y, button_width, button_height }, "Clear")) {
+        editor.selected_point = invalid_point;
         graph_free(&graph);
     }
 }
 
 void ProcessEvents()
 {
+    graph_editor_process_events(&editor);
 }
 
 
@@ -149,5 +151,10 @@ void Draw()
 
     graph_editor_draw(&editor);
     draw_control_panel(&controls);
+}
+
+void Cleanup()
+{
+    graph_free(&graph);
 }
 
