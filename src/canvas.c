@@ -10,24 +10,22 @@
 typedef struct ControlPanel {
     int x, y;
     int width, height;
+    Color background_color;
 } ControlPanel;
 
 /*** Global Variables ***/
 static const int window_width = 600;
 static const int window_height = 700;
 
-static const int canvas_width = 600;
-static const int canvas_height = 600;
+static Graph graph;
 
-Graph graph;
-
-GraphEditor editor;
-ControlPanel controls;
+static GraphEditor editor;
+static ControlPanel controls;
 /************************/
 
-void graph_add_random_point(Graph *graph, int width, int height)
+void graph_add_random_point(Graph *graph, int x, int y, int width, int height)
 {
-    Point p = point(randfromi(0, width), randfrom(0, height));
+    Point p = point(randfromi(x, width), randfrom(y, height));
 
     graph_add_point(graph, p);
 }
@@ -58,6 +56,14 @@ void graph_remove_random_point(Graph *graph)
     bool success = graph_remove_point(graph, p);
 }
 
+void control_panel_init(ControlPanel *panel, int x, int y, int width, int height)
+{
+    panel->x = x;
+    panel->y = y;
+    panel->width = width;
+    panel->height = height;
+    panel->background_color = DARKGRAY;
+}
 
 void Init()
 {
@@ -84,34 +90,45 @@ void Init()
     graph_add_segment(&graph, s3);
     graph_add_segment(&graph, s4);
 
-    graph_editor_init(&editor, &graph, 0, 0, canvas_width, canvas_height);
-    controls.x = canvas_width;
-    controls.y = canvas_height;
-    controls.width = window_width;
-    controls.height = window_height - canvas_height;
+    graph_editor_init(&editor, &graph, 0, 0, window_width, 600);
+    control_panel_init(&controls, 0, 600, window_width, 100);
 }
 
 
 void draw_control_panel(ControlPanel *panel)
 {
+    DrawRectangle(panel->x, panel->y, panel->width, panel->height, panel->background_color);
+
+    const float top_padding = 20;
+    const float left_padding = 10;
+    const float button_width = 105;
+    const float button_height = 40;
+    const float button_padding = 5;
+
     /******** GUI ********/
-    if (GuiButton((Rectangle){ 10, panel->x + 20, 100, 35 }, "+ Add Point")) {
-        graph_add_random_point(&graph, canvas_width, canvas_height);
+    float x = panel->x + left_padding + button_padding;
+    float y = panel->y + top_padding;
+    if (GuiButton((Rectangle){ x, y, button_width, button_height }, "+ Add Point")) {
+        graph_add_random_point(&graph, editor.x, editor.y, editor.width, editor.height);
     }
 
-    if (GuiButton((Rectangle){ 120, panel->x + 20, 100, 35 }, "+ Add Segment")) {
+    x += button_padding + button_width + button_padding;
+    if (GuiButton((Rectangle){ x, y, button_width, button_height }, "+ Add Segment")) {
         graph_add_random_segment(&graph);
     }
 
-    if (GuiButton((Rectangle){ 230, panel->x + 20, 100, 35 }, "- Remove Segment")) {
+    x += button_padding + button_width + button_padding;
+    if (GuiButton((Rectangle){ x, y, button_width, button_height }, "- Remove Segment")) {
         graph_remove_random_segment(&graph);
     }
 
-    if (GuiButton((Rectangle){ 340, panel->x + 20, 100, 35 }, "- Remove Point")) {
+    x += button_padding + button_width + button_padding;
+    if (GuiButton((Rectangle){ x, y, button_width, button_height }, "- Remove Point")) {
         graph_remove_random_point(&graph);
     }
 
-    if (GuiButton((Rectangle){ 450, panel->x + 20, 100, 35 }, "Clear")) {
+    x += button_padding + button_width + button_padding;
+    if (GuiButton((Rectangle){ x, y, button_width, button_height }, "Clear")) {
         graph_free(&graph);
     }
 }
@@ -132,5 +149,6 @@ void Draw()
 
 
     graph_editor_draw(&editor);
+    draw_control_panel(&controls);
 }
 
