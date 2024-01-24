@@ -14,6 +14,9 @@ void Draw(void);
 
 int main(void)
 {
+#ifdef DEBUG
+    printf("Debug Mode\n");
+#endif
     srand(time(NULL));
 
     Init();
@@ -36,7 +39,9 @@ int main(void)
             DrawFPS(10, 10);
             Draw();
         EndDrawing();
-
+#ifdef DEBUG
+        fflush(stdout);
+#endif
     }
 #endif
 

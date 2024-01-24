@@ -219,10 +219,14 @@ bool graph_remove_segment_at(Graph *graph, int index)
 
 bool graph_remove_point(Graph *graph, Point p)
 {
+    Segment *segments_to_delete = NULL;
     for (int i=0; i<arrlen(graph->segments); i++) {
         if (segment_includes_point(graph->segments[i], p)) {
-            arrdel(graph->segments, i);
+            arrput(segments_to_delete, graph->segments[i]);
         }
+    }
+    for (int i=0; i<arrlen(segments_to_delete); i++) {
+        graph_remove_segment(graph, segments_to_delete[i]);
     }
 
     for (int i=0; i<arrlen(graph->points); i++) {

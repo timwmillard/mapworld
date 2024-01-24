@@ -102,7 +102,7 @@ void graph_editor_update(GraphEditor *editor, double dt)
 
 void graph_editor_draw(GraphEditor *editor)
 {
-    // Draw Canvas
+    // Draw Canvas Background
     DrawRectangle(editor->x, editor->y, editor->width, editor->height, editor->background_color);
 
     draw_graph(editor->graph);

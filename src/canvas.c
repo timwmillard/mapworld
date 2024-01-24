@@ -147,7 +147,6 @@ void Draw()
 {
     ClearBackground(LIGHTGRAY);
 
-
     graph_editor_draw(&editor);
     draw_control_panel(&controls);
 }
