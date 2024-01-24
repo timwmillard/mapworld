@@ -38,8 +38,8 @@ void graph_add_random_segment(Graph *graph)
 void graph_remove_random_segment(Graph *graph)
 {
     int index = randfromi(0, graph_segments_len(graph)-1);
-
-    bool success = graph_remove_segment_at(graph, index);
+    Segment s = graph_segment_at(graph, index);
+    bool success = graph_remove_segment(graph, s);
 }
 
 
