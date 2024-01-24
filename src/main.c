@@ -11,12 +11,14 @@ void Init(void);
 void ProcessEvents(void);
 void Update(float);     // Update and Draw one frame
 void Draw(void);
+void Cleanup(void);
 
 int main(void)
 {
 #ifdef DEBUG
     printf("Debug Mode\n");
 #endif
+
     srand(time(NULL));
 
     Init();
@@ -25,11 +27,11 @@ int main(void)
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
 #else
+
     SetTargetFPS(60);
 
-
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
+    while (!WindowShouldClose()) {    // Detect window close button or ESC key
+ 
         ProcessEvents();
 
         float dt = GetFrameTime();
@@ -39,13 +41,17 @@ int main(void)
             DrawFPS(10, 10);
             Draw();
         EndDrawing();
+
 #ifdef DEBUG
         fflush(stdout);
 #endif
-    }
-#endif
+
+    } // while
+#endif // PLATFORM_WEB
 
     CloseWindow();
+
+    Cleanup();
 
     return 0;
 }
