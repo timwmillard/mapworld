@@ -74,6 +74,11 @@ raylib:
 	make -B && \
 	cp libraylib.a ../../../build/macos/
 
+lua:
+	cd lib/lua-5.4.6/src && \
+	make && \
+	cp liblua.a ../../../build/macos/
+
 raylib-web:
 	cd lib/raylib-5.0/src && \
 	make clean && \
