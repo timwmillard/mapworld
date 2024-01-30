@@ -7,6 +7,8 @@
 #include <emscripten/emscripten.h>
 #endif
 
+void UpdateDrawFrame(void);  
+
 void Init(void);
 void ProcessEvents(void);
 void Update(float);     // Update and Draw one frame
@@ -31,21 +33,7 @@ int main(void)
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {    // Detect window close button or ESC key
- 
-        ProcessEvents();
-
-        float dt = GetFrameTime();
-        Update(dt);
-
-        BeginDrawing();
-            DrawFPS(10, 10);
-            Draw();
-        EndDrawing();
-
-#ifdef DEBUG
-        fflush(stdout);
-#endif
-
+        UpdateDrawFrame();
     } // while
 #endif // PLATFORM_WEB
 
@@ -56,3 +44,19 @@ int main(void)
     return 0;
 }
 
+void UpdateDrawFrame(void)
+{
+    ProcessEvents();
+
+    float dt = GetFrameTime();
+    Update(dt);
+
+    BeginDrawing();
+        DrawFPS(10, 10);
+        Draw();
+    EndDrawing();
+
+#ifdef DEBUG
+    fflush(stdout);
+#endif
+}
