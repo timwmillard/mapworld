@@ -125,6 +125,9 @@ typedef struct Graph {
     Segment *segments;
 } Graph;
 
+#define graph_points_len(g) arrlen((g)->points)
+#define graph_segments_len(g) arrlen((g)->segments)
+
 #endif
 
 /******************************************************************************
@@ -159,22 +162,12 @@ void graph_add_pointxy(Graph *graph, double x, double y)
     graph_add_point(graph, point(x, y));
 }
 
-int graph_points_len(Graph *graph)
-{
-    return arrlen(graph->points);
-}
-
 Point graph_point_at(Graph *graph, int index)
 {
     if (index >= arrlen(graph->points) || index < 0)
         return (Point){0};
 
     return graph->points[index];
-}
-
-int graph_segments_len(Graph *graph)
-{
-    return arrlen(graph->segments);
 }
 
 Segment graph_segment_at(Graph *graph, int index)
