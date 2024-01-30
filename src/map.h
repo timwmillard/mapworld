@@ -135,7 +135,7 @@ typedef struct Graph {
 #ifdef MAP_IMPLEMENTATION
 
 #define STB_DS_IMPLEMENTATION
-#include "stb_ds.h"
+#include "../lib/stb_ds.h"
 
 bool graph_contains_point(Graph *graph, Point p)
 {

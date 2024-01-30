@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <raylib.h>
 
-#include "../lib/map.h"
+#include "map.h"
 
 void draw_point(Point point, double size, Color color);
 
@@ -46,7 +46,7 @@ void graph_editor_draw(GraphEditor *editor);
 #ifdef GRAPH_EDITOR_IMPLEMENTATION
 
 #define MAP_IMPLEMENTATION
-#include "../lib/map.h"
+#include "map.h"
 
 Vector2 point_to_vector2(Point p)
 {

@@ -31,7 +31,7 @@ all: $(TARGET)
 $(TARGET) : main.o canvas.o
 	$(LD) -o $(TARGET) $^ $(FRAMEWORKS) $(LDFLAGS)
 
-canvas.o: src/canvas.c src/graph_editor.h lib/map.h
+canvas.o: src/canvas.c src/graph_editor.h src/map.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 main.o: src/main.c
@@ -91,8 +91,8 @@ run:
 clean:
 	rm -f *.o $(TARGET) release/$(TARGET).app/Contents/MacOS/$(TARGET)
 
-test: lib/map.h lib/map_test.c
-	@clang lib/map_test.c -o lib/map_test
-	@./lib/map_test
-	@rm lib/map_test
+test: src/map.h src/map_test.c
+	@clang src/map_test.c -o src/map_test
+	@./src/map_test
+	@rm src/map_test
 
