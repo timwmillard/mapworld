@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <math.h>
 
-#include "map.h"
+#include "graph.h"
 
 void test_start(char *test_name)
 {

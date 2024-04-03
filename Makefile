@@ -31,7 +31,7 @@ all: $(TARGET)
 $(TARGET) : main.o canvas.o build/macos/libraylib.a build/macos/liblua.a
 	$(LD) -o $(TARGET) $^ $(FRAMEWORKS) $(LDFLAGS)
 
-canvas.o: src/canvas.c src/graph_editor.h src/map.h
+canvas.o: src/canvas.c src/editor.h src/graph.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 main.o: src/main.c
@@ -115,8 +115,8 @@ clean-lua:
 
 clean-all: clean clean-raylib clean-lua
 
-test: src/map.h src/map_test.c
-	@clang src/map_test.c -o src/map_test
-	@./src/map_test
-	@rm src/map_test
+test: src/graph.h src/graph_test.c
+	@clang src/graph_test.c -o src/graph_test
+	@./src/graph_test
+	@rm src/graph_test
 

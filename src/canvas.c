@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <raylib.h>
 
-#define GRAPH_EDITOR_IMPLEMENTATION
-#include "graph_editor.h"
+#define EDITOR_IMPLEMENTATION
+#include "editor.h"
 
 #define RAYGUI_IMPLEMENTATION
 #include "../lib/raygui.h"
@@ -80,6 +80,11 @@ void Init()
     Segment s3 = segmentp(p1, p4);
     Segment s4 = segmentp(p2, p3);
 
+    graph.bounds.x = 0;
+    graph.bounds.y = 0;
+    graph.bounds.width = 100;
+    graph.bounds.height = 100;
+
     graph_add_point(&graph, p1);
     graph_add_point(&graph, p2);
     graph_add_point(&graph, p3);
@@ -145,6 +150,7 @@ void Update(float dt)
 }
 
 
+#define BACKGROUND_COLOR  CLITERAL(Color){ 200, 200, 200, 255 }   // Light Gray
 void Draw()
 {
     ClearBackground(LIGHTGRAY);

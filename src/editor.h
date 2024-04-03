@@ -1,17 +1,17 @@
 /******************************************************************************
  * Header
- * map_draw.h
+ * editor.h
  ******************************************************************************/
 
-#ifndef GRAPH_EDITOR_H
-#define GRAPH_EDITOR_H
+#ifndef EDITOR_H
+#define EDITOR_H
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <raylib.h>
 
-#include "map.h"
+#include "graph.h"
 
 void draw_point(Point point, double size, Color color);
 
@@ -33,20 +33,20 @@ typedef struct GraphEditor {
 
 void graph_editor_init(GraphEditor *editor, Graph *graph, int x, int y, int width, int height);
 void graph_editor_process_events(GraphEditor *editor);
-void graph_editor_update(GraphEditor *editor, double dt);
+void graph_editor_update(GraphEditor *editor, float ft);
 void graph_editor_draw(GraphEditor *editor);
 
 #endif
 
 /******************************************************************************
  * Implementation
- * graph_editor.c
+ * editor.c
  ******************************************************************************/
 
-#ifdef GRAPH_EDITOR_IMPLEMENTATION
+#ifdef EDITOR_IMPLEMENTATION
 
-#define MAP_IMPLEMENTATION
-#include "map.h"
+#define GRAPH_IMPLEMENTATION
+#include "graph.h"
 
 Vector2 point_to_vector2(Point p)
 {
@@ -80,11 +80,11 @@ void draw_graph(Graph *graph)
 }
 
 void graph_editor_init(GraphEditor *editor,
-                       Graph *graph,
-                       int x,
-                       int y,
-                       int width,
-                       int height)
+        Graph *graph,
+        int x,
+        int y,
+        int width,
+        int height)
 {
     editor->graph = graph;
     editor->x = x;
@@ -105,13 +105,13 @@ void graph_editor_process_events(GraphEditor *editor)
             graph_add_point(editor->graph, mouse);
             editor->selected_point = mouse;
         } else {
-            editor->selected_point = mouse;
+            editor->selected_point = hovered;
         }
     }
 }
 
 
-void graph_editor_update(GraphEditor *editor, double dt)
+void graph_editor_update(GraphEditor *editor, float dt)
 {
 }
 

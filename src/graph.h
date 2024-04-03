@@ -1,10 +1,10 @@
 /******************************************************************************
  * Header
- * map.h
+ * graph.h
  ******************************************************************************/
 
-#ifndef MAP_H
-#define MAP_H
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -123,6 +123,11 @@ static inline bool segment_equals(Segment s1, Segment s2)
 typedef struct Graph {
     Point *points;
     Segment *segments;
+
+    struct {
+        int x, y, width, height;
+    } bounds;
+
 } Graph;
 
 #define graph_points_len(g) arrlen((g)->points)
@@ -132,13 +137,19 @@ typedef struct Graph {
 
 /******************************************************************************
  * Implementation
- * map.c
+ * graph.c
  ******************************************************************************/
 
-#ifdef MAP_IMPLEMENTATION
+#ifdef GRAPH_IMPLEMENTATION
 
 #define STB_DS_IMPLEMENTATION
 #include "../lib/stb_ds.h"
+
+
+void print_point(Point p)
+{
+    printf("Point(%d, %d)\n", p.x, p.y);
+}
 
 bool graph_contains_point(Graph *graph, Point p)
 {
@@ -151,6 +162,13 @@ bool graph_contains_point(Graph *graph, Point p)
 
 bool graph_add_point(Graph *graph, Point p)
 {
+    if (p.x < graph->bounds.x || p.x > graph->bounds.width ||
+        p.y < graph->bounds.y || p.y > graph->bounds.height)
+        return false; 
+
+    printf("Bound(%d, %d, %d, %d)\n", graph->bounds.x, graph->bounds.y, graph->bounds.width, graph->bounds.height);
+    print_point(p);
+
     if (graph_contains_point(graph, p)) return false;
 
     arrput(graph->points, p);
